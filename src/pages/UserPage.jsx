@@ -1,346 +1,556 @@
-import React, { useState } from 'react';
-import { Calendar, Check, Clock as ClockIcon, X, Edit, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { 
+  Clock, 
+  Plus, 
+  Edit, 
+  Trash2, 
+  CheckCircle2, 
+  XCircle, 
+  AlertCircle, 
+  Calendar,
+  ClockIcon,
+  CreditCard,
+  Mail,
+  Briefcase,
+  Play,
+  Square
+} from 'lucide-react';
 
-// Componente principal
-const TimeTrackingApp = ({ onProfileClick }) => {
-  const [user, setUser] = useState({
+// Comprehensive list of legal hour types in Colombia
+const HOUR_TYPES = {
+  DIURNA_ORDINARIA: {
+    id: 'DIURNA_ORDINARIA',
+    name: 'Hora Diurna Ordinaria',
+    description: 'Horas trabajadas entre las 6:00 am y las 10:00 pm'
+  },
+  NOCTURNA_ORDINARIA: {
+    id: 'NOCTURNA_ORDINARIA',
+    name: 'Hora Nocturna Ordinaria',
+    description: 'Horas trabajadas entre las 10:00 pm y las 6:00 am'
+  },
+  EXTRA_DIURNA: {
+    id: 'EXTRA_DIURNA',
+    name: 'Hora Extra Diurna',
+    description: 'Horas extra trabajadas entre las 6:00 am y las 10:00 pm'
+  },
+  EXTRA_NOCTURNA: {
+    id: 'EXTRA_NOCTURNA',
+    name: 'Hora Extra Nocturna',
+    description: 'Horas extra trabajadas entre las 10:00 pm y las 6:00 am'
+  },
+  DOMINICAL_DIURNA: {
+    id: 'DOMINICAL_DIURNA',
+    name: 'Hora Dominical Diurna',
+    description: 'Horas trabajadas en domingo entre las 6:00 am y las 10:00 pm'
+  },
+  DOMINICAL_NOCTURNA: {
+    id: 'DOMINICAL_NOCTURNA',
+    name: 'Hora Dominical Nocturna',
+    description: 'Horas trabajadas en domingo entre las 10:00 pm y las 6:00 am'
+  },
+  FESTIVO_DIURNO: {
+    id: 'FESTIVO_DIURNO',
+    name: 'Hora Festivo Diurno',
+    description: 'Horas trabajadas en día festivo entre las 6:00 am y las 10:00 pm'
+  },
+  FESTIVO_NOCTURNO: {
+    id: 'FESTIVO_NOCTURNO',
+    name: 'Hora Festivo Nocturno',
+    description: 'Horas trabajadas en día festivo entre las 10:00 pm y las 6:00 am'
+  },
+  EXTRA_DOMINICAL_DIURNA: {
+    id: 'EXTRA_DOMINICAL_DIURNA',
+    name: 'Hora Extra Dominical Diurna',
+    description: 'Horas extra trabajadas en domingo entre las 6:00 am y las 10:00 pm'
+  },
+  EXTRA_DOMINICAL_NOCTURNA: {
+    id: 'EXTRA_DOMINICAL_NOCTURNA',
+    name: 'Hora Extra Dominical Nocturna',
+    description: 'Horas extra trabajadas en domingo entre las 10:00 pm y las 6:00 am'
+  },
+  EXTRA_FESTIVO_DIURNO: {
+    id: 'EXTRA_FESTIVO_DIURNO',
+    name: 'Hora Extra Festivo Diurno',
+    description: 'Horas extra trabajadas en festivo entre las 6:00 am y las 10:00 pm'
+  },
+  EXTRA_FESTIVO_NOCTURNO: {
+    id: 'EXTRA_FESTIVO_NOCTURNO',
+    name: 'Hora Extra Festivo Nocturno',
+    description: 'Horas extra trabajadas en festivo entre las 10:00 pm y las 6:00 am'
+  }
+};
+
+// Mock data structure
+const mockExtraHours = [
+  {
     id: 1,
+    date: '2024-03-25',
+    startTime: '18:00',
+    endTime: '20:00',
+    typeOfHour: 'DIURNA_ORDINARIA',
+    status: 'Aprobado',
+    totalHours: 2,
+    project: 'Sistema de Gestión RH',
+    description: 'Desarrollo de módulo de horas extras'
+  },
+  {
+    id: 2,
+    date: '2024-03-26',
+    startTime: '19:00',
+    endTime: '22:00',
+    typeOfHour: 'NOCTURNA_ORDINARIA',
+    status: 'Pendiente',
+    totalHours: 3,
+    project: 'Migración de Base de Datos',
+    description: 'Trabajo de migración fuera de horario'
+  }
+];
+
+const App = () => {
+  const [extraHours, setExtraHours] = useState(mockExtraHours);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentEntry, setCurrentEntry] = useState(null);
+  const [filters, setFilters] = useState({
+    status: '',
+    typeOfHour: '',
+    dateFrom: '',
+    dateTo: ''
+  });
+  const [formData, setFormData] = useState({
+    date: '',
+    startTime: '',
+    endTime: '',
+    typeOfHour: '',
+    project: '',
+    description: ''
+  });
+
+  // Validate if hours are actually overtime
+  const validateOvertimeHours = (startTime, endTime) => {
+    const start = new Date(`2024-01-01T${startTime}`);
+    const end = new Date(`2024-01-01T${endTime}`);
+    const standardWorkStart = new Date(`2024-01-01T06:00`);
+    const standardWorkEnd = new Date(`2024-01-01T18:00`);
+
+    if (start < standardWorkStart || end > standardWorkEnd) {
+      return {
+        isOvertime: true,
+        message: ''
+      };
+    }
+
+    return {
+      isOvertime: false,
+      message: 'Las horas registradas están dentro del horario laboral estándar. No son horas extras.'
+    };
+  };
+
+  const employeeProfile = {
     name: 'María García',
-    position: 'Desarrolladora Senior',  
     email: 'maria.garcia@empresa.com',
     department: 'Desarrollo de Software',
-    departmentLeadId: 2
-  });
-  
-  const [projects, setProjects] = useState([
-    { id: 1, name: 'Sistema de Gestión RH' },
-    { id: 2, name: 'Migración de Base de Datos' },
-    { id: 3, name: 'Desarrollo Frontend' },
-  ]);
-  
-  const [timeEntries, setTimeEntries] = useState([
-    { 
-      id: 1, 
-      date: '2024-03-25', 
-      projectId: 1, 
-      hours: 2, 
-      type: 'Hora Diurna Ordinaria', 
-      status: 'Aprobado',
-      userId: 1
-    },
-    { 
-      id: 2, 
-      date: '2024-03-26', 
-      projectId: 2, 
-      hours: 3, 
-      type: 'Hora Nocturna Ordinaria', 
-      status: 'Pendiente',
-      userId: 1
+    position: 'Desarrolladora Senior',
+    avatar: '/api/placeholder/100/100'
+  };
+
+  const getStatusIcon = (status) => {
+    switch(status) {
+      case 'Aprobado':
+        return <CheckCircle2 className="text-green-500" />;
+      case 'Rechazado':
+        return <XCircle className="text-red-500" />;
+      case 'Pendiente':
+        return <AlertCircle className="text-yellow-500" />;
+      default:
+        return <Clock />;
     }
-  ]);
-  
-  const [newEntry, setNewEntry] = useState({
-    date: '',
-    projectId: '',
-    hours: '',
-    type: '',
-    status: 'Pendiente'
+  };
+
+  const filteredExtraHours = extraHours.filter(entry => {
+    const matchStatus = !filters.status || entry.status === filters.status;
+    const matchType = !filters.typeOfHour || entry.typeOfHour === filters.typeOfHour;
+    const matchDateFrom = !filters.dateFrom || entry.date >= filters.dateFrom;
+    const matchDateTo = !filters.dateTo || entry.date <= filters.dateTo;
+    
+    return matchStatus && matchType && matchDateFrom && matchDateTo;
   });
-  
-  // Variables para filtros
-  const [hoursFilter, setHoursFilter] = useState('');
-  
-  // Calcular las estadísticas
-  const totalHours = timeEntries.reduce((sum, entry) => sum + entry.hours, 0);
-  const approvedHours = timeEntries
-    .filter(entry => entry.status === 'Aprobado')
-    .reduce((sum, entry) => sum + entry.hours, 0);
-  const pendingHours = timeEntries
-    .filter(entry => entry.status === 'Pendiente')
-    .reduce((sum, entry) => sum + entry.hours, 0);
-  
-  // Tipos de horas
-  const hourTypes = [
-    'Hora Diurna Ordinaria',
-    'Hora Nocturna Ordinaria',
-    'Hora Diurna Extra',
-    'Hora Nocturna Extra'
-  ];
-  
-  // Estados posibles
-  const statuses = ['Pendiente', 'Aprobado', 'Rechazado'];
-  
-  // Manejadores de eventos
+
+  const handleAddEdit = (entry = null) => {
+    if (entry) {
+      setCurrentEntry(entry);
+      setFormData({
+        date: entry.date,
+        startTime: entry.startTime,
+        endTime: entry.endTime,
+        typeOfHour: entry.typeOfHour,
+        project: entry.project,
+        description: entry.description
+      });
+    } else {
+      setCurrentEntry(null);
+      setFormData({
+        date: '',
+        startTime: '',
+        endTime: '',
+        typeOfHour: '',
+        project: '',
+        description: ''
+      });
+    }
+    setIsModalOpen(true);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewEntry({
-      ...newEntry,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
-    });
+    }));
   };
-  
-  const handleHoursFilterChange = (e) => {
-    setHoursFilter(e.target.value);
+
+  const handleDelete = (id) => {
+    if (window.confirm('¿Estás seguro de eliminar este registro de horas extras?')) {
+      setExtraHours(extraHours.filter(entry => entry.id !== id));
+    }
   };
-  
-  const handleSubmit = () => {
-    // Validar que todos los campos estén completos
-    if (!newEntry.date || !newEntry.projectId || !newEntry.hours || !newEntry.type) {
-      alert('Por favor complete todos los campos');
+
+  const handleSave = () => {
+    if (!formData.date || !formData.startTime || !formData.endTime || !formData.project || !formData.typeOfHour) {
+      alert('Por favor complete todos los campos obligatorios');
       return;
     }
-    
-    // Crear nueva entrada con ID único
-    const entry = {
-      id: timeEntries.length + 1,
-      ...newEntry,
-      projectId: parseInt(newEntry.projectId),
-      hours: parseInt(newEntry.hours),
-      userId: user.id
-    };
-    
-    // Actualizar el estado
-    setTimeEntries([...timeEntries, entry]);
-    
-    // Limpiar el formulario
-    setNewEntry({
-      date: '',
-      projectId: '',
-      hours: '',
-      type: '',
-      status: 'Pendiente'
-    });
+
+    const overtimeValidation = validateOvertimeHours(formData.startTime, formData.endTime);
+    if (!overtimeValidation.isOvertime) {
+      alert(overtimeValidation.message);
+      return;
+    }
+
+    const startTime = new Date(`2024-01-01T${formData.startTime}`);
+    const endTime = new Date(`2024-01-01T${formData.endTime}`);
+    const totalHours = (endTime - startTime) / (1000 * 60 * 60);
+
+    const selectedHourType = HOUR_TYPES[formData.typeOfHour];
+
+    if (currentEntry) {
+      setExtraHours(extraHours.map(e => 
+        e.id === currentEntry.id 
+          ? {
+              ...e,
+              ...formData,
+              totalHours,
+              status: 'Pendiente'
+            } 
+          : e
+      ));
+    } else {
+      const newEntry = {
+        id: extraHours.length + 1,
+        ...formData,
+        totalHours,
+        status: 'Pendiente'
+      };
+      setExtraHours([...extraHours, newEntry]);
+    }
+    setIsModalOpen(false);
   };
-  
-  const handleDelete = (id) => {
-    setTimeEntries(timeEntries.filter(entry => entry.id !== id));
-  };
-  
-  // Función para obtener el nombre del proyecto por ID
-  const getProjectName = (projectId) => {
-    const project = projects.find(p => p.id === projectId);
-    return project ? project.name : '';
-  };
-  
-  return (
-    <div className="max-w-6xl mx-auto p-4 bg-gray-50 rounded-lg shadow">
-      {/* Header con botón de registrar horas */}
-      <div className="flex justify-between items-center mb-6">
-        <UserHeader user={user} onProfileClick={onProfileClick} />
-        <button
-          onClick={handleSubmit}
-          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 flex items-center"
-        >
-          <span className="mr-2">+</span> Registrar Horas
-        </button>
-      </div>
-      
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
-        <StatCard 
-          icon={<Calendar className="text-blue-500" />} 
-          title="Total Horas" 
-          value={totalHours} 
-        />
-        <StatCard 
-          icon={<Check className="text-green-500" />} 
-          title="Horas Aprobadas" 
-          value={approvedHours} 
-        />
-        <StatCard 
-          icon={<ClockIcon className="text-yellow-500" />} 
-          title="Horas Pendientes" 
-          value={pendingHours} 
-        />
-      </div>
-      
-      {/* Formulario para registrar horas */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
-        <h2 className="text-lg font-semibold mb-4">Registrar Nuevas Horas</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
-            <input 
-              type="date" 
+
+  const renderModal = () => {
+    if (!isModalOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6 w-96 shadow-xl">
+          <h2 className="text-2xl font-bold mb-4">
+            {currentEntry ? 'Editar' : 'Registrar'} Horas Extras
+          </h2>
+          <div className="space-y-4">
+            <input
+              type="date"
               name="date"
-              value={newEntry.date}
+              value={formData.date}
               onChange={handleInputChange}
-              className="p-2 border rounded w-full" 
+              className="w-full px-3 py-2 border rounded-md"
+              required
             />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Proyecto</label>
-            <select 
-              name="projectId"
-              value={newEntry.projectId}
+            <div className="flex space-x-2">
+              <div className="w-1/2">
+                <div className="flex items-center mb-2">
+                  <Play className="mr-2 text-green-600" />
+                  <h3 className="font-semibold text-green-700">Hora de Inicio</h3>
+                </div>
+                <input
+                  type="time"
+                  name="startTime"
+                  value={formData.startTime}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-md bg-green-50"
+                  required
+                />
+              </div>
+
+              <div className="w-1/2">
+                <div className="flex items-center mb-2">
+                  <Square className="mr-2 text-red-600" />
+                  <h3 className="font-semibold text-red-700">Hora Final</h3>
+                </div>
+                <input
+                  type="time"
+                  name="endTime"
+                  value={formData.endTime}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-md bg-red-50"
+                  required
+                />
+              </div>
+            </div>
+
+            <select
+              name="typeOfHour"
+              value={formData.typeOfHour}
               onChange={handleInputChange}
-              className="p-2 border rounded w-full"
+              className="w-full px-3 py-2 border rounded-md"
+              required
             >
-              <option value="">Seleccionar Proyecto</option>
-              {projects.map(project => (
-                <option key={project.id} value={project.id}>{project.name}</option>
+              <option value="">Seleccionar Tipo de Hora</option>
+              {Object.values(HOUR_TYPES).map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.name}
+                </option>
               ))}
             </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Hora</label>
-            <select 
-              name="type"
-              value={newEntry.type}
+            <input
+              type="text"
+              name="project"
+              value={formData.project}
               onChange={handleInputChange}
-              className="p-2 border rounded w-full"
-            >
-              <option value="">Seleccionar Tipo</option>
-              {hourTypes.map((type, idx) => (
-                <option key={idx} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad de Horas</label>
-            <input 
-              type="number" 
-              name="hours"
-              value={newEntry.hours}
-              onChange={handleInputChange}
-              className="p-2 border rounded w-full" 
-              min="1" 
-              max="24"
+              placeholder="Proyecto"
+              className="w-full px-3 py-2 border rounded-md"
+              required
             />
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              placeholder="Descripción"
+              className="w-full px-3 py-2 border rounded-md"
+              rows="3"
+            />
+          </div>
+          <div className="mt-4 flex justify-end space-x-3">
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="px-4 py-2 bg-gray-200 rounded-md"
+            >
+              Cancelar
+            </button>
+            <button 
+              onClick={handleSave}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            >
+              Guardar
+            </button>
           </div>
         </div>
       </div>
-     
-      {/* Table with subtle gray borders */}
-      <div className="overflow-x-auto mt-6">
-        <table className="min-w-full bg-white">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-3 text-left border-b border-r border-gray-300 text-gray-900">Fecha</th>
-              <th className="p-3 text-left border-b border-r border-gray-300 text-gray-900">Proyecto</th>
-              <th className="p-3 text-left border-b border-r border-gray-300 text-gray-900">Tipo de Hora</th>
-              <th className="p-3 text-center border-b border-r border-gray-300 text-gray-900">Horas</th>
-              <th className="p-3 text-left border-b border-r border-gray-300 text-gray-900">Estado</th>
-              <th className="p-3 text-center border-b border-gray-300 text-gray-900">Acciones</th>
+    );
+  };
+
+  const renderExtraHoursTable = () => {
+    return (
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        {/* Filters */}
+        <div className="p-4 bg-gray-100 flex space-x-4">
+          <select
+            name="status"
+            value={filters.status}
+            onChange={(e) => setFilters(prev => ({...prev, status: e.target.value}))}
+            className="flex-1 px-3 py-2 border rounded-md"
+          >
+            <option value="">Estado</option>
+            <option value="Aprobado">Aprobado</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Rechazado">Rechazado</option>
+          </select>
+          <select
+            name="typeOfHour"
+            value={filters.typeOfHour}
+            onChange={(e) => setFilters(prev => ({...prev, typeOfHour: e.target.value}))}
+            className="flex-1 px-3 py-2 border rounded-md"
+          >
+            <option value="">Tipo de Hora</option>
+            {Object.values(HOUR_TYPES).map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
+          </select>
+          <input
+            type="date"
+            name="dateFrom"
+            value={filters.dateFrom}
+            onChange={(e) => setFilters(prev => ({...prev, dateFrom: e.target.value}))}
+            placeholder="Desde"
+            className="flex-1 px-3 py-2 border rounded-md"
+          />
+          <input
+            type="date"
+            name="dateTo"
+            value={filters.dateTo}
+            onChange={(e) => setFilters(prev => ({...prev, dateTo: e.target.value}))}
+            placeholder="Hasta"
+            className="flex-1 px-3 py-2 border rounded-md"
+          />
+        </div>
+
+        {/* Table */}
+        <table className="w-full">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="p-3 text-left">Fecha</th>
+              <th className="p-3 text-left">Proyecto</th>
+              <th className="p-3 text-left">Tipo de Hora</th>
+              <th className="p-3 text-left">Horas</th>
+              <th className="p-3 text-left">Estado</th>
+              <th className="p-3 text-left">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {timeEntries.map((entry) => (
-              <tr key={entry.id} className="hover:bg-gray-50">
-                <td className="p-3 text-gray-600 border-b border-r border-gray-200">{entry.date}</td>
-                <td className="p-3 border-b border-r border-gray-200">{getProjectName(entry.projectId)}</td>
-                <td className="p-3 border-b border-r border-gray-200">{entry.type}</td>
-                <td className="p-3 text-center border-b border-r border-gray-200">{entry.hours}</td>
-                <td className="p-3 border-b border-r border-gray-200">
-                  <StatusBadge status={entry.status} />
+            {filteredExtraHours.map(entry => (
+              <tr 
+                key={entry.id} 
+                className="border-b hover:bg-gray-50 transition"
+              >
+                <td className="p-3">{entry.date}</td>
+                <td className="p-3">{entry.project}</td>
+                <td className="p-3">
+                  <div title={HOUR_TYPES[entry.typeOfHour].description}>
+                    {HOUR_TYPES[entry.typeOfHour].name}
+                  </div>
                 </td>
-                <td className="p-3 flex justify-center space-x-2 border-b border-gray-200">
-                  <button 
-                    className="text-blue-500"
-                    title="Editar"
-                  >
-                    <Edit size={18} />
-                  </button>
-                  <button 
-                    className="text-red-500"
-                    title="Eliminar"
-                    onClick={() => handleDelete(entry.id)}
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                <td className="p-3">{entry.totalHours}</td>
+                <td className="p-3">
+                  <div className="flex items-center">
+                    {getStatusIcon(entry.status)}
+                    <span className="ml-2">{entry.status}</span>
+                  </div>
+                </td>
+                <td className="p-3">
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={() => handleAddEdit(entry)}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      <Edit />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(entry.id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-// Componente para la cabecera de usuario con posición encima del correo
-// Componente para la cabecera de usuario con posición encima del correo
-const UserHeader = ({ user, onProfileClick }) => {
   return (
-    <div className="flex items-center">
-      <a 
-        href="/profile" 
-        className="block relative cursor-pointer" 
-        title="Ver perfil de usuario"
-        onClick={onProfileClick}
-      >
-        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 hover:bg-blue-200 transition-colors">
-          {user.name.charAt(0)}
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="container mx-auto max-w-7xl">
+        {/* Header Section with Profile */}
+        <div className="mb-8 flex justify-between items-center">
+          <div className="flex items-center space-x-6">
+            {/* Profile Avatar */}
+            <div className="relative">
+              <img 
+                src={employeeProfile.avatar} 
+                alt={employeeProfile.name} 
+                className="w-16 h-16 rounded-full border-4 border-blue-500 object-cover"
+              />
+              <div className="absolute bottom-0 right-0 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></div>
+            </div>
+
+            {/* Profile Info */}
+            <div>
+              <div className="flex items-center space-x-2">
+                <h1 className="text-3xl font-bold text-gray-800">{employeeProfile.name}</h1>
+                <div className="bg-blue-100 px-2 py-1 rounded-full text-xs text-blue-700">
+                  {employeeProfile.position}
+                </div>
+              </div>
+              <div className="flex items-center space-x-4 text-gray-600 mt-2">
+                <div className="flex items-center space-x-1">
+                  <Mail className="w-4 h-4" />
+                  <span className="text-sm">{employeeProfile.email}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Briefcase className="w-4 h-4" />
+                  <span className="text-sm">{employeeProfile.department}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Hours Icon */}
+            <div className="bg-blue-100 p-3 rounded-full ml-4">
+              <Clock className="text-blue-600 w-6 h-6" />
+            </div>
+          </div>
+
+          <button 
+            onClick={() => handleAddEdit()}
+            className="flex items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2.5 rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+          >
+            <Plus className="mr-2" /> Registrar Horas
+          </button>
         </div>
-        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-      </a>
-      <div className="ml-4">
-      <a 
-  href="/profile" 
-  className="text-2xl font-bold no-underline text-inherit block" 
-  onClick={onProfileClick}
->
-  {user.name}
-</a>
-<div className="mt-1 inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
-  {user.position}
-</div>
 
-        <div className="flex flex-col md:flex-row md:space-x-4">
-          <p className="text-gray-600">
-            <span className="mr-1">✉️</span> {user.email}
-          </p>
-          <p className="text-gray-600">
-            <span className="mr-1">📁</span> {user.department}
-          </p>
+        {/* Analytics Cards */}
+        <div className="grid grid-cols-3 gap-6 mb-8">
+          {[
+            { 
+              icon: <Calendar className="w-6 h-6 text-blue-600" />, 
+              title: 'Total Horas', 
+              value: filteredExtraHours.reduce((sum, entry) => sum + entry.totalHours, 0)
+            },
+            { 
+              icon: <ClockIcon className="w-6 h-6 text-green-600" />, 
+              title: 'Horas Aprobadas', 
+              value: filteredExtraHours.filter(e => e.status === 'Aprobado').reduce((sum, entry) => sum + entry.totalHours, 0)
+            },
+            { 
+              icon: <AlertCircle className="w-6 h-6 text-yellow-600" />, 
+              title: 'Horas Pendientes', 
+              value: filteredExtraHours.filter(e => e.status === 'Pendiente').reduce((sum, entry) => sum + entry.totalHours, 0)
+            }
+          ].map((card, index) => (
+            <div 
+              key={index} 
+              className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow duration-300 flex items-center space-x-4"
+            >
+              <div className="bg-gray-100 p-3 rounded-full">
+                {card.icon}
+              </div>
+              <div>
+                <p className="text-gray-500 text-sm">{card.title}</p>
+                <p className="text-2xl font-bold text-gray-800">{card.value}</p>
+              </div>
+            </div>
+          ))}
         </div>
+
+        {/* Extra Hours Table */}
+        {renderExtraHoursTable()}
+
+        {/* Modal */}
+        {renderModal()}
       </div>
-    </div>
-  );
-};
-// Componente para las tarjetas de estadísticas
-const StatCard = ({ icon, title, value }) => {
-  return (
-    <div className="bg-white p-4 rounded-lg shadow flex flex-col items-center">
-      <div className="w-10 h-10 flex items-center justify-center">
-        {icon}
-      </div>
-      <h3 className="text-gray-500 text-sm mt-2">{title}</h3>
-      <p className="text-3xl font-bold">{value}</p>
     </div>
   );
 };
 
-// Componente para mostrar el estado con iconos actualizados
-const StatusBadge = ({ status }) => {
-  if (status === "Aprobado") {
-    return (
-      <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-        <Check size={14} className="mr-1 text-green-500" />
-        {status}
-      </div>
-    );
-  } else if (status === "Pendiente") {
-    return (
-      <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-        <ClockIcon size={14} className="mr-1 text-yellow-500" />
-        {status}
-      </div>
-    );
-  } else if (status === "Rechazado") {
-    return (
-      <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-        <X size={14} className="mr-1 text-red-500" />
-        {status}
-      </div>
-    );
-  }
-  
-  return (
-    <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-      {status}
-    </div>
-  );
-};
-
-export default TimeTrackingApp;
+export default App;
