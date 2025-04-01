@@ -1,0 +1,11 @@
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ExtraHours.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ExtraHours.Core.AssemblyInfoInputs.cache
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ExtraHours.Core.AssemblyInfo.cs
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ExtraHours.Core.csproj.CoreCompileInputs.cache
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/bin/Debug/net9.0/ExtraHours.Core.deps.json
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/bin/Debug/net9.0/ExtraHours.Core.dll
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/bin/Debug/net9.0/ExtraHours.Core.pdb
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ExtraHours.Core.dll
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/refint/ExtraHours.Core.dll
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ExtraHours.Core.pdb
+/Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ref/ExtraHours.Core.dll

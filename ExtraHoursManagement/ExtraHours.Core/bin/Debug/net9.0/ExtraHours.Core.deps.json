@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "ExtraHours.Core/1.0.0": {
+        "runtime": {
+          "ExtraHours.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ExtraHours.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
