@@ -9,3 +9,15 @@
 /Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/refint/ExtraHours.Core.dll
 /Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ExtraHours.Core.pdb
 /Users/alvaroperez/ExtraHoursManagement/ExtraHours.Core/obj/Debug/net9.0/ref/ExtraHours.Core.dll
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\bin\Debug\net9.0\ExtraHours.Core.deps.json
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\bin\Debug\net9.0\ExtraHours.Core.dll
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\bin\Debug\net9.0\ExtraHours.Core.pdb
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ExtraHours.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ExtraHours.Core.AssemblyInfoInputs.cache
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ExtraHours.Core.AssemblyInfo.cs
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ExtraHours.Core.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ExtraHours.Core.sourcelink.json
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ExtraHours.Core.dll
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\refint\ExtraHours.Core.dll
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ExtraHours.Core.pdb
+C:\Users\DELL\Desktop\Backend-\ExtraHoursManagement\ExtraHours.Core\obj\Debug\net9.0\ref\ExtraHours.Core.dll

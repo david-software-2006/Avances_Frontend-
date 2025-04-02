@@ -14,6 +14,8 @@
           "Microsoft.EntityFrameworkCore": "9.0.3",
           "Microsoft.EntityFrameworkCore.Design": "9.0.3",
           "Microsoft.Extensions.Configuration": "9.0.3",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
+          "Swashbuckle.AspNetCore": "8.1.0",
           "System.IdentityModel.Tokens.Jwt": "8.7.0"
         },
         "runtime": {
@@ -32,7 +34,7 @@
           "Microsoft.Extensions.Options": "9.0.3",
           "Microsoft.Extensions.Primitives": "9.0.3",
           "Npgsql.DependencyInjection": "8.0.6",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.0",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "Npgsql.OpenTelemetry": "8.0.6",
           "OpenTelemetry.Extensions.Hosting": "1.9.0",
           "System.Text.Json": "9.0.3"
@@ -419,6 +421,7 @@
           }
         }
       },
+      "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
       "Microsoft.Extensions.Caching.Abstractions/9.0.3": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "9.0.3"
@@ -672,6 +675,14 @@
           }
         }
       },
+      "Microsoft.OpenApi/1.6.23": {
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+            "assemblyVersion": "1.6.23.0",
+            "fileVersion": "1.6.23.0"
+          }
+        }
+      },
       "Mono.TextTemplating/3.0.0": {
         "dependencies": {
           "System.CodeDom": "6.0.0"
@@ -683,22 +694,21 @@
           }
         }
       },
-      "Npgsql/9.0.0": {
+      "Npgsql/9.0.3": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.3",
-          "System.Text.Json": "9.0.3"
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.3"
         },
         "runtime": {
           "lib/net8.0/Npgsql.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.0.0"
+            "assemblyVersion": "9.0.3.0",
+            "fileVersion": "9.0.3.0"
           }
         }
       },
       "Npgsql.DependencyInjection/8.0.6": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3",
-          "Npgsql": "9.0.0"
+          "Npgsql": "9.0.3"
         },
         "runtime": {
           "lib/net7.0/Npgsql.DependencyInjection.dll": {
@@ -707,22 +717,22 @@
           }
         }
       },
-      "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.0": {
+      "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.4": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "9.0.3",
           "Microsoft.EntityFrameworkCore.Relational": "9.0.3",
-          "Npgsql": "9.0.0"
+          "Npgsql": "9.0.3"
         },
         "runtime": {
           "lib/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.0.0"
+            "assemblyVersion": "9.0.4.0",
+            "fileVersion": "9.0.4.0"
           }
         }
       },
       "Npgsql.OpenTelemetry/8.0.6": {
         "dependencies": {
-          "Npgsql": "9.0.0",
+          "Npgsql": "9.0.3",
           "OpenTelemetry.Api": "1.9.0"
         },
         "runtime": {
@@ -777,6 +787,44 @@
           "lib/net8.0/OpenTelemetry.Extensions.Hosting.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.9.0.1312"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore/8.1.0": {
+        "dependencies": {
+          "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
+          "Swashbuckle.AspNetCore.Swagger": "8.1.0",
+          "Swashbuckle.AspNetCore.SwaggerGen": "8.1.0",
+          "Swashbuckle.AspNetCore.SwaggerUI": "8.1.0"
+        }
+      },
+      "Swashbuckle.AspNetCore.Swagger/8.1.0": {
+        "dependencies": {
+          "Microsoft.OpenApi": "1.6.23"
+        },
+        "runtime": {
+          "lib/net9.0/Swashbuckle.AspNetCore.Swagger.dll": {
+            "assemblyVersion": "8.1.0.0",
+            "fileVersion": "8.1.0.1229"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore.SwaggerGen/8.1.0": {
+        "dependencies": {
+          "Swashbuckle.AspNetCore.Swagger": "8.1.0"
+        },
+        "runtime": {
+          "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "assemblyVersion": "8.1.0.0",
+            "fileVersion": "8.1.0.1229"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore.SwaggerUI/8.1.0": {
+        "runtime": {
+          "lib/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll": {
+            "assemblyVersion": "8.1.0.0",
+            "fileVersion": "8.1.0.1229"
           }
         }
       },
@@ -869,19 +917,12 @@
         }
       },
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
-      "System.Text.Json/9.0.3": {
-        "runtime": {
-          "lib/net9.0/System.Text.Json.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.325.11113"
-          }
-        }
-      },
+      "System.Text.Json/9.0.3": {},
       "System.Threading.Channels/7.0.0": {},
       "ExtraHours.Core/1.0.0": {
         "runtime": {
           "ExtraHours.Core.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1012,6 +1053,13 @@
       "sha512": "sha512-xsS+5TM7M5f3tCSRaSbzouGCoIgD2zokQxBGXvf9z3DusRztWvT1NNT9XJaY2JoK1qEEDcHah8is6azYmpZhIg==",
       "path": "microsoft.entityframeworkcore.relational/9.0.3",
       "hashPath": "microsoft.entityframeworkcore.relational.9.0.3.nupkg.sha512"
+    },
+    "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ckb5EDBUNJdFWyajfXzUIMRkhf52fHZOQuuZg/oiu8y7zDCVwD0iHhew6MnThjHmevanpxL3f5ci2TtHQEN6bw==",
+      "path": "microsoft.extensions.apidescription.server/6.0.5",
+      "hashPath": "microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/9.0.3": {
       "type": "package",
@@ -1195,6 +1243,13 @@
       "path": "microsoft.identitymodel.tokens/8.7.0",
       "hashPath": "microsoft.identitymodel.tokens.8.7.0.nupkg.sha512"
     },
+    "Microsoft.OpenApi/1.6.23": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tZ1I0KXnn98CWuV8cpI247A17jaY+ILS9vvF7yhI0uPPEqF4P1d7BWL5Uwtel10w9NucllHB3nTkfYTAcHAh8g==",
+      "path": "microsoft.openapi/1.6.23",
+      "hashPath": "microsoft.openapi.1.6.23.nupkg.sha512"
+    },
     "Mono.TextTemplating/3.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1202,12 +1257,12 @@
       "path": "mono.texttemplating/3.0.0",
       "hashPath": "mono.texttemplating.3.0.0.nupkg.sha512"
     },
-    "Npgsql/9.0.0": {
+    "Npgsql/9.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zu1nCRt0gWP/GR0reYgg0Bl5o8qyNV7mVAgzAbVLRiAd1CYXcf/9nrubPH0mt93u8iGTKmYqWaLVECEAcE6IfQ==",
-      "path": "npgsql/9.0.0",
-      "hashPath": "npgsql.9.0.0.nupkg.sha512"
+      "sha512": "sha512-tPvY61CxOAWxNsKLEBg+oR646X4Bc8UmyQ/tJszL/7mEmIXQnnBhVJZrZEEUv0Bstu0mEsHZD5At3EO8zQRAYw==",
+      "path": "npgsql/9.0.3",
+      "hashPath": "npgsql.9.0.3.nupkg.sha512"
     },
     "Npgsql.DependencyInjection/8.0.6": {
       "type": "package",
@@ -1216,12 +1271,12 @@
       "path": "npgsql.dependencyinjection/8.0.6",
       "hashPath": "npgsql.dependencyinjection.8.0.6.nupkg.sha512"
     },
-    "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.0": {
+    "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ObngKFRLMBAeMqQzK7SC0Q6WZtWw0imPmEkVPo12yLVF3fioz2TN+w0mhNMJ5cVd/sLB2u+jei0bmA9sDMtkMw==",
-      "path": "npgsql.entityframeworkcore.postgresql/9.0.0",
-      "hashPath": "npgsql.entityframeworkcore.postgresql.9.0.0.nupkg.sha512"
+      "sha512": "sha512-mw5vcY2IEc7L+IeGrxpp/J5OSnCcjkjAgJYCm/eD52wpZze8zsSifdqV7zXslSMmfJG2iIUGZyo3KuDtEFKwMQ==",
+      "path": "npgsql.entityframeworkcore.postgresql/9.0.4",
+      "hashPath": "npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512"
     },
     "Npgsql.OpenTelemetry/8.0.6": {
       "type": "package",
@@ -1257,6 +1312,34 @@
       "sha512": "sha512-QBQPrKDVCXxTBE+r8tgjmFNKKHi4sKyczmip2XGUcjy8kk3quUNhttnjiMqC4sU50Hemmn4i5752Co26pnKe3A==",
       "path": "opentelemetry.extensions.hosting/1.9.0",
       "hashPath": "opentelemetry.extensions.hosting.1.9.0.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore/8.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8NJwXskWNBhX4IntitP1VP68hzhQ9Sex4mR9ZbqCuuUsaWlfrMA+yDIYDFsbHlB2NQ6Gt27AT15BWo9jxHj1tg==",
+      "path": "swashbuckle.aspnetcore/8.1.0",
+      "hashPath": "swashbuckle.aspnetcore.8.1.0.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.Swagger/8.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TRpBDdWh/6IzXHOLKVEuZSuhcdc8OIwhr8dyLnWvEh6FO4f0KiATAzr8yzHspcCFzCc/CONpvUCq4DzazpP6Og==",
+      "path": "swashbuckle.aspnetcore.swagger/8.1.0",
+      "hashPath": "swashbuckle.aspnetcore.swagger.8.1.0.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.SwaggerGen/8.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sXAUNodmnzrJb1qmgdLY6HgTDsgagXCn6p+qygW2wP0BjcvdZZA6GdDgtuc8iQON9ekrp7m5G0Zc09lvuNhc/A==",
+      "path": "swashbuckle.aspnetcore.swaggergen/8.1.0",
+      "hashPath": "swashbuckle.aspnetcore.swaggergen.8.1.0.nupkg.sha512"
+    },
+    "Swashbuckle.AspNetCore.SwaggerUI/8.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PYyTbYrEz1q8N8ZpCFzY5hOkvP5gv9oIml06wrrrjGRFvVXyCF/b58FRI/9mnRKRBAmWKZR5pqhmJBzvsVveSQ==",
+      "path": "swashbuckle.aspnetcore.swaggerui/8.1.0",
+      "hashPath": "swashbuckle.aspnetcore.swaggerui.8.1.0.nupkg.sha512"
     },
     "System.CodeDom/6.0.0": {
       "type": "package",

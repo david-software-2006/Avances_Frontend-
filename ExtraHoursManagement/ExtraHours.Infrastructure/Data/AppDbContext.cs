@@ -10,4 +10,4 @@ namespace ExtraHours.Infrastructure.Data {
         public DbSet<Permission> Permissions {get; set;}
 
     }
-}
+}   
