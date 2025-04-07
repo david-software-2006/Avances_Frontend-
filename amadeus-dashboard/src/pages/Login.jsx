@@ -1,79 +1,157 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
+import * as yup from 'yup';
+import { FaLinkedin, FaTwitter, FaYoutube, FaInstagram } from 'react-icons/fa';
 
-const schema = yup.object({
-  username: yup.string().required("El username es requerido."),
-  password: yup.string().required("El password es requerido."),
-}).required();
+const schema = yup
+  .object({
+    email: yup
+      .string()
+      .email('El correo electrónico no es válido.')
+      .required('El correo electrónico es requerido.')
+  })
+  .required();
 
 const Login = () => {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
 
-  const { register, handleSubmit, formState:{ errors } } = useForm({
-    resolver: yupResolver(schema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
   });
-  const onSubmit = data => {
+
+  const onSubmit = (data) => {
     console.log(data);
-    navigate("/dashboard")
-  }
+    navigate('/dashboard');
+  };
 
   return (
-    <div className="flex h-screen">
-    <div className="w-1/2 bg-gradient-to-br from-blue-900 to-blue-600 flex items-center justify-center">
-      <div className="text-white text-center">
-        <h1 className="text-3xl font-bold mb-4">AMADEUS SELLING PLATFORM CONNECT</h1>
+    // Removed h-screen and added h-full with min-h-screen to ensure full coverage
+    // Added m-0 p-0 to eliminate any spacing
+    <div className="flex flex-col md:flex-row h-full min-h-screen w-full font-sans overflow-hidden m-0 p-0">
+      {/* Lado izquierdo - Gradiente con logo */}
+      <div className="w-full md:w-1/2 bg-gradient-to-br from-[#0A2A66] to-[#0091DA] flex items-center justify-center min-h-screen">
+        <div className="text-white text-center px-4">
+          <img
+            src="/utils/AmadeusLogoBlanco.png"
+            alt="Amadeus Logo"
+            className="w-3/4 max-w-xs mx-auto mb-4"
+          />
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">SELLING PLATFORM CONNECT</h1>
+          
+          {/* Redes sociales */}
+          <div className="flex justify-center space-x-4 mt-8 md:mt-12">
+            <a
+              href="https://www.linkedin.com/company/amadeus/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaLinkedin className="text-2xl md:text-3xl hover:text-blue-300 transition-colors" />
+            </a>
+            <a
+              href="https://twitter.com/AmadeusITGroup"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaTwitter className="text-2xl md:text-3xl hover:text-blue-300 transition-colors" />
+            </a>
+            <a
+              href="https://www.youtube.com/user/AmadeusITGroup"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaYoutube className="text-2xl md:text-3xl hover:text-red-300 transition-colors" />
+            </a>
+            <a
+              href="https://www.instagram.com/amadeusitgroup/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaInstagram className="text-2xl md:text-3xl hover:text-pink-300 transition-colors" />
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-    <div className="w-1/2 flex items-center justify-center">
-      <div className="w-full max-w-md p-8 rounded-lg">
-        <h2 className="text-2xl font-bold mb-6">Inicio de sesión</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-1">Nombre de usuario *</label>
-            <input
-              type="text"
-              className={
-                errors.username ? "w-full p-2 border border-red-500 focus:ring-red-500 rounded" : "w-full p-2 border border-gray-300 rounded"
-              }
-              {...register("username")} 
-            />
-            <p className='text-red-500 text-sm mt-1'>{errors.username?.message}</p>
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-1">Contraseña *</label>
-            <input
-              type="password"
-              className={
-                errors.password ? "w-full p-2 border border-red-500 focus:ring-red-500 rounded" : "w-full p-2 border border-gray-300 rounded"
-              }
-              {...register("password")} 
-            />
-            <p className='text-red-500 text-sm mt-1'>{errors.password?.message}</p>
-          </div>
-          <div className="mb-4 flex items-center">
-            <input
-              type="checkbox"
-              className="mr-2"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-            />
-            <span className="text-gray-700">Recuérdame</span>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-          >
-            Inicio de sesión
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-  )
-}
 
-export default Login
+      {/* Lado derecho - Formulario */}
+      <div className="w-full md:w-1/2 flex items-center justify-center min-h-screen bg-white">
+        <div className="w-full max-w-xl p-4 sm:p-6 md:p-10 bg-white flex flex-col justify-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#041E42] mb-6 text-center">
+            Inicio de sesión
+          </h2>
+          <form onSubmit={handleSubmit(onSubmit)} className="md:max-w-md md:mx-auto w-full">
+            {/* Campo Correo Electrónico */}
+            <div className="mb-4">
+              <label className="block text-[#041E42] font-medium mb-1">
+                Correo electrónico *
+              </label>
+              <input
+                type="email"
+                className={`w-full p-2 border ${
+                  errors.email ? 'border-red-500' : 'border-gray-300'
+                } rounded-lg focus:ring-2 focus:ring-[#0073CF] transition-all text-black [&::placeholder]:text-gray-500`}
+                {...register('email')}
+              />
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email?.message}
+              </p>
+            </div>
+
+            {/* Contraseña */}
+            <div className="mb-4">
+              <label className="block text-[#041E42] font-medium mb-1">
+                Contraseña *
+              </label>
+              <input
+                type="password"
+                className={`w-full p-2 border ${
+                  errors.password ? 'border-red-500' : 'border-gray-300'
+                } rounded-lg focus:ring-2 focus:ring-[#0073CF] transition-all text-black [&::placeholder]:text-gray-500`}
+                {...register('password')}
+              />
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password?.message}
+              </p>
+            </div>
+
+            {/* Olvidaste tu contraseña - Nuevo elemento */}
+            <div className="mb-4 text-right">
+              <Link 
+                to="/password" 
+                className="text-[#0073CF] hover:text-[#005EA8] text-sm transition-all"
+              >
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
+
+            <div className="mb-4 flex items-center">
+              <input
+                type="checkbox"
+                className="mr-2 accent-[#0073CF]"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              <span className="text-[#041E42]">Recuérdame</span>
+            </div>
+
+            {/* Enviar */}
+            <button
+              type="submit"
+              className="w-full bg-[#0073CF] text-white p-2 rounded-lg hover:bg-[#005EA8] transition-all duration-300 shadow-md"
+            >
+              Inicio de sesión
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
